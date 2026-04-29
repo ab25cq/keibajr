@@ -1,0 +1,43 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.keibajr'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.keibajr"
+        minSdk 23
+        targetSdk 35
+        versionCode 2
+        versionName "2"
+    }
+
+    signingConfigs {
+        release {
+            if (project.hasProperty("releaseStoreFile")) {
+                storeFile file(project.property("releaseStoreFile"))
+                storePassword project.property("releaseStorePassword")
+                keyAlias project.property("releaseKeyAlias")
+                keyPassword project.property("releaseKeyPassword")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+        }
+    }
+
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach {
+            outputFileName = "keibajr.apk"
+        }
+    }
+}
+
+dependencies {
+}
