@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("競馬育成Jr");
+        setTitle(Texts.t("競馬育成Jr", "Keiba Trainer Jr"));
         store = new HorseStore(this);
         store.ensureHorse();
         buildLayout();
@@ -103,46 +103,46 @@ public class MainActivity extends Activity {
         root.setPadding(pad, pad, pad, pad * 2);
         scrollView.addView(root);
 
-        TextView title = text("競馬育成Jr", 27, Color.rgb(33, 45, 38), true);
-        TextView subtitle = text("指示だけ出して、実時間で調教。準備ができたらJRA 2026 G1/G2/G3へ出走。", 14, Color.rgb(83, 84, 75), false);
+        TextView title = text(Texts.t("競馬育成Jr", "Keiba Trainer Jr"), 27, Color.rgb(33, 45, 38), true);
+        TextView subtitle = text(Texts.t("指示だけ出して、実時間で調教。準備ができたらJRA 2026 G1/G2/G3へ出走。", "Give training orders, wait in real time, then enter 2026 JRA G1/G2/G3 races."), 14, Color.rgb(83, 84, 75), false);
         root.addView(title);
         root.addView(subtitle);
 
-        root.addView(sectionTitle("新しい競走馬"));
+        root.addView(sectionTitle(Texts.t("新しい競走馬", "New Racehorse")));
         setupPanel = panel();
         horseNameEdit = new EditText(this);
         horseNameEdit.setSingleLine(true);
-        horseNameEdit.setHint("馬名");
+        horseNameEdit.setHint(Texts.t("馬名", "Horse name"));
         horseNameEdit.setInputType(InputType.TYPE_CLASS_TEXT);
         stallionSpinner = spinner(Stallion.names());
-        createHorseButton = button("この馬で育成開始");
+        createHorseButton = button(Texts.t("この馬で育成開始", "Start Training"));
         createHorseButton.setOnClickListener(v -> createHorseFromInput());
-        setupPanel.addView(label("馬名"));
+        setupPanel.addView(label(Texts.t("馬名", "Horse name")));
         setupPanel.addView(horseNameEdit);
-        setupPanel.addView(label("種牡馬"));
+        setupPanel.addView(label(Texts.t("種牡馬", "Sire")));
         setupPanel.addView(stallionSpinner);
         setupPanel.addView(createHorseButton);
         root.addView(setupPanel);
 
         calendarView = panelText();
-        root.addView(sectionTitle("カレンダー"));
+        root.addView(sectionTitle(Texts.t("カレンダー", "Calendar")));
         root.addView(calendarView);
 
         horseView = panelText();
-        root.addView(sectionTitle("厩舎"));
+        root.addView(sectionTitle(Texts.t("厩舎", "Stable")));
         root.addView(horseView);
 
-        root.addView(sectionTitle("調教"));
+        root.addView(sectionTitle(Texts.t("調教", "Training")));
         LinearLayout trainingPanel = panel();
-        trainingSpinner = spinner(new String[]{"強め", "弱め", "馬なり"});
-        durationSpinner = spinner(new String[]{"10秒", "1分", "10分", "1時間", "3時間", "8時間"});
-        trainingPanel.addView(label("調教指示"));
+        trainingSpinner = spinner(Texts.english() ? new String[]{"Hard", "Easy", "Hand ride"} : new String[]{"強め", "弱め", "馬なり"});
+        durationSpinner = spinner(Texts.english() ? new String[]{"10 sec", "1 min", "10 min", "1 hour", "3 hours", "8 hours"} : new String[]{"10秒", "1分", "10分", "1時間", "3時間", "8時間"});
+        trainingPanel.addView(label(Texts.t("調教指示", "Training order")));
         trainingPanel.addView(trainingSpinner);
-        trainingPanel.addView(label("現実の調教時間"));
+        trainingPanel.addView(label(Texts.t("現実の調教時間", "Real training time")));
         trainingPanel.addView(durationSpinner);
-        trainingButton = button("調教開始");
+        trainingButton = button(Texts.t("調教開始", "Start Training"));
         trainingButton.setOnClickListener(v -> startTraining());
-        pastureButton = button("放牧する");
+        pastureButton = button(Texts.t("放牧する", "Send to Pasture"));
         pastureButton.setOnClickListener(v -> startPasture());
         trainingView = text("", 15, Color.rgb(48, 61, 52), false);
         trainingPanel.addView(trainingButton);
@@ -150,14 +150,14 @@ public class MainActivity extends Activity {
         trainingPanel.addView(trainingView);
         root.addView(trainingPanel);
 
-        root.addView(sectionTitle("出走"));
+        root.addView(sectionTitle(Texts.t("出走", "Race Entry")));
         LinearLayout racePanel = panel();
         raceSpinner = new Spinner(this);
         raceAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>());
         raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         raceSpinner.setAdapter(raceAdapter);
-        jockeySpinner = spinner(new String[]{"若手ジョッキー", "ベテランジョッキー", "逃げ名人", "差し名人", "外国人ジョッキー"});
-        tacticSpinner = spinner(new String[]{"お任せ", "逃げ", "普通", "追い込み"});
+        jockeySpinner = spinner(Texts.english() ? new String[]{"Young jockey", "Veteran jockey", "Front-run expert", "Closing expert", "International jockey"} : new String[]{"若手ジョッキー", "ベテランジョッキー", "逃げ名人", "差し名人", "外国人ジョッキー"});
+        tacticSpinner = spinner(Texts.english() ? new String[]{"Auto", "Front-run", "Balanced", "Closer"} : new String[]{"お任せ", "逃げ", "普通", "追い込み"});
         raceInfoView = text("", 14, Color.rgb(74, 75, 68), false);
         raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -169,14 +169,14 @@ public class MainActivity extends Activity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        racePanel.addView(label("レース"));
+        racePanel.addView(label(Texts.t("レース", "Race")));
         racePanel.addView(raceSpinner);
         racePanel.addView(raceInfoView);
-        racePanel.addView(label("ジョッキー"));
+        racePanel.addView(label(Texts.t("ジョッキー", "Jockey")));
         racePanel.addView(jockeySpinner);
-        racePanel.addView(label("指示"));
+        racePanel.addView(label(Texts.t("指示", "Tactic")));
         racePanel.addView(tacticSpinner);
-        raceButton = button("出馬する");
+        raceButton = button(Texts.t("出馬する", "Enter Race"));
         raceButton.setOnClickListener(v -> startRace());
         racePanel.addView(raceButton);
         root.addView(racePanel);
@@ -184,18 +184,18 @@ public class MainActivity extends Activity {
         raceLogView = panelText();
         root.addView(raceLogView);
 
-        retireButton = button("この馬を引退させる");
+        retireButton = button(Texts.t("この馬を引退させる", "Retire This Horse"));
         retireButton.setOnClickListener(v -> {
             store.retireCurrentHorse();
-            raceLogView.setText("この馬を引退させました。馬名と種牡馬を選んで次の競走馬を作れます。");
+            raceLogView.setText(Texts.t("この馬を引退させました。馬名と種牡馬を選んで次の競走馬を作れます。", "This horse has retired. Choose a name and sire to create the next horse."));
             refreshUi();
         });
         root.addView(retireButton);
 
-        nextHorseButton = button("次の競走馬を作る");
+        nextHorseButton = button(Texts.t("次の競走馬を作る", "Create Next Horse"));
         nextHorseButton.setOnClickListener(v -> {
             horseNameEdit.requestFocus();
-            raceLogView.setText("馬名と種牡馬を選んでください。");
+            raceLogView.setText(Texts.t("馬名と種牡馬を選んでください。", "Choose a horse name and sire."));
             refreshUi();
         });
         root.addView(nextHorseButton);
@@ -211,18 +211,21 @@ public class MainActivity extends Activity {
         Stallion stallion = Stallion.ALL[stallionSpinner.getSelectedItemPosition()];
         store.createHorse(name, stallion);
         availableRaceWeekKey = -1;
-        raceLogView.setText(name + "が入厩しました。父は" + stallion.name + "です。");
+        raceLogView.setText(Texts.t(name + "が入厩しました。父は" + stallion.name + "です.",
+                name + " has entered the stable. Sire: " + stallion.name + "."));
         horseNameEdit.setText("");
         refreshUi();
     }
 
     private void startTraining() {
         if (!store.hasHorse()) {
-            raceLogView.setText("先に馬名と種牡馬を決めて競走馬を作ってください。");
+            raceLogView.setText(Texts.t("先に馬名と種牡馬を決めて競走馬を作ってください。",
+                    "Choose a horse name and sire first."));
             return;
         }
         if (store.isRetired()) {
-            raceLogView.setText("この馬は引退済みです。次の競走馬を迎えてください。");
+            raceLogView.setText(Texts.t("この馬は引退済みです。次の競走馬を迎えてください。",
+                    "This horse has retired. Create the next racehorse."));
             return;
         }
         if (store.isTraining()) {
@@ -231,37 +234,44 @@ public class MainActivity extends Activity {
         int type = trainingSpinner.getSelectedItemPosition();
         long durationMs = durationFromSelection(durationSpinner.getSelectedItemPosition());
         store.startTraining(type, durationMs);
-        raceLogView.setText("調教を開始しました。完了まではアプリを閉じても実時間で進みます。");
+        raceLogView.setText(Texts.t("調教を開始しました。完了まではアプリを閉じても実時間で進みます。",
+                "Training has started. Real time keeps passing even if you close the app."));
         refreshUi();
     }
 
     private void startPasture() {
         if (!store.hasHorse()) {
-            raceLogView.setText("先に馬名と種牡馬を決めて競走馬を作ってください。");
+            raceLogView.setText(Texts.t("先に馬名と種牡馬を決めて競走馬を作ってください。",
+                    "Choose a horse name and sire first."));
             return;
         }
         if (store.isRetired()) {
-            raceLogView.setText("この馬は引退済みです。次の競走馬を迎えてください。");
+            raceLogView.setText(Texts.t("この馬は引退済みです。次の競走馬を迎えてください。",
+                    "This horse has retired. Create the next racehorse."));
             return;
         }
         if (store.isTraining() || raceRunning) {
-            raceLogView.setText("今は放牧できません。調教やレースが終わってからにしましょう。");
+            raceLogView.setText(Texts.t("今は放牧できません。調教やレースが終わってからにしましょう。",
+                    "Pasture is not available now. Wait until training or the race is finished."));
             return;
         }
         store.applyPasture();
         availableRaceWeekKey = -1;
-        raceLogView.setText("1か月放牧に出しました。疲れが抜けて、馬体も戻ってきました。");
+        raceLogView.setText(Texts.t("1か月放牧に出しました。疲れが抜けて、馬体も戻ってきました。",
+                "The horse spent one month at pasture. Fatigue is down and its body has recovered."));
         refreshUi();
     }
 
     private void startRace() {
         if (!store.hasHorse()) {
-            raceLogView.setText("先に馬名と種牡馬を決めて競走馬を作ってください。");
+            raceLogView.setText(Texts.t("先に馬名と種牡馬を決めて競走馬を作ってください。",
+                    "Choose a horse name and sire first."));
             return;
         }
         store.finishTrainingIfReady();
         if (!store.isReadyForRace()) {
-            raceLogView.setText("まだ準備OKではありません。必要な調教回数を完了すると出走できます。");
+            raceLogView.setText(Texts.t("まだ準備OKではありません。調教を重ねると出走できます。",
+                    "The horse is not race-ready yet. Keep training until the trainer clears it."));
             refreshUi();
             return;
         }
@@ -271,7 +281,8 @@ public class MainActivity extends Activity {
 
         RaceData race = selectedRace();
         if (race == null) {
-            raceLogView.setText("今週出走できる重賞はありません。調教で週を進めて次の番組を待ちましょう。");
+            raceLogView.setText(Texts.t("今週出走できる重賞はありません。調教で週を進めて次の番組を待ちましょう。",
+                    "There are no graded races this week. Advance the calendar through training."));
             refreshUi();
             return;
         }
@@ -313,12 +324,13 @@ public class MainActivity extends Activity {
         store.finishTrainingIfReady();
         if (!store.hasHorse()) {
             setupPanel.setVisibility(View.VISIBLE);
-            calendarView.setText("馬名と種牡馬を決めると、2026年1月第1週から育成が始まります。");
-            horseView.setText("まだ競走馬がいません。");
+            calendarView.setText(Texts.t("馬名と種牡馬を決めると、2026年1月第1週から育成が始まります。",
+                    "Choose a name and sire to begin in 2026 January Week 1."));
+            horseView.setText(Texts.t("まだ競走馬がいません。", "No racehorse yet."));
             availableRaces.clear();
             availableRaceWeekKey = -1;
             raceAdapter.clear();
-            raceAdapter.add("競走馬を作成してください");
+            raceAdapter.add(Texts.t("競走馬を作成してください", "Create a racehorse first"));
             raceAdapter.notifyDataSetChanged();
             trainingButton.setEnabled(false);
             raceButton.setEnabled(false);
@@ -326,8 +338,9 @@ public class MainActivity extends Activity {
             pastureButton.setEnabled(false);
             retireButton.setVisibility(View.GONE);
             nextHorseButton.setVisibility(View.GONE);
-            trainingView.setText("馬を作成すると調教できます。");
-            raceInfoView.setText("出走できるレースはカレンダーの週に合わせて表示されます。");
+            trainingView.setText(Texts.t("馬を作成すると調教できます。", "Create a horse to start training."));
+            raceInfoView.setText(Texts.t("出走できるレースはカレンダーの週に合わせて表示されます。",
+                    "Available races change with the calendar week."));
             return;
         }
         Horse horse = store.snapshot();
@@ -355,12 +368,13 @@ public class MainActivity extends Activity {
         RaceData race = selectedRace();
         if (race == null) {
             raceInfoView.setText(GameCalendar.weekText(store.currentGameDay())
-                    + "\n今週出走できるG1/G2/G3はありません。");
+                    + Texts.t("\n今週出走できるG1/G2/G3はありません。",
+                    "\nNo G1/G2/G3 races are available this week."));
             return;
         }
         raceInfoView.setText(GameCalendar.weekText(store.currentGameDay())
-                + " / " + race.course + " / " + race.surface + race.distance + "m / " + race.grade
-                + "\n1着賞金 " + race.prizeWin + "万円");
+                + " / " + race.courseText() + " / " + race.surfaceText() + " " + race.distance + "m / " + race.grade
+                + Texts.t("\n1着賞金 " + race.prizeWin + "万円", "\nWinner prize " + race.prizeWin + " x 10,000 yen"));
     }
 
     private void updateAvailableRaces(int gameDay) {
@@ -373,7 +387,7 @@ public class MainActivity extends Activity {
         availableRaces.addAll(RaceData.forGameWeek(gameDay));
         raceAdapter.clear();
         if (availableRaces.isEmpty()) {
-            raceAdapter.add("今週の重賞はありません");
+            raceAdapter.add(Texts.t("今週の重賞はありません", "No graded races this week"));
         } else {
             for (RaceData race : availableRaces) {
                 raceAdapter.add(race.grade + " " + race.name);
@@ -494,44 +508,56 @@ public class MainActivity extends Activity {
         boolean retired;
 
         String statusText() {
-            return name + "  " + ageText() + "  第" + generation + "世代"
-                    + "\n父: " + stallionName + " / 成長: " + growthType
-                    + "\n戦績: " + races + "戦 " + wins + "勝 / 獲得賞金 " + prize + "万円"
-                    + "\n調教師コメント:\n" + trainerComment();
+            return name + "  " + ageText() + "  " + Texts.t("第" + generation + "世代", "Generation " + generation)
+                    + Texts.t("\n父: " + stallionName + " / 成長: " + growthText(growthType),
+                    "\nSire: " + stallionName + " / Growth: " + growthText(growthType))
+                    + Texts.t("\n戦績: " + races + "戦 " + wins + "勝 / 獲得賞金 " + prize + "万円",
+                    "\nRecord: " + races + " starts, " + wins + " wins / Earnings " + prize + " x 10,000 yen")
+                    + Texts.t("\n調教師コメント:\n", "\nTrainer comment:\n") + trainerComment();
         }
 
         String ageText() {
             int age = 3 + careerMonths / 12;
             int month = careerMonths % 12;
-            return age + "歳" + (month == 0 ? "" : month + "か月");
+            return Texts.t(age + "歳" + (month == 0 ? "" : month + "か月"),
+                    age + " years" + (month == 0 ? "" : " " + month + " months"));
         }
 
         private String trainerComment() {
             if (retired) {
                 if ("fracture".equals(retireReason)) {
-                    return "強めの調教が続いて脚元に無理が出ました。骨折のため、この馬は引退です。";
+                    return Texts.t("強めの調教が続いて脚元に無理が出ました。骨折のため、この馬は引退です。",
+                            "Hard training put too much strain on the legs. The horse has retired with a fracture.");
                 }
-                return "ここまでよく走ってくれました。そろそろ引退させて、次の馬を見ましょう。";
+                return Texts.t("ここまでよく走ってくれました。そろそろ引退させて、次の馬を見ましょう。",
+                        "This horse has run well. It is time to retire and raise the next one.");
             }
 
             String conditionComment;
             if (condition >= 82 && fatigue <= 25) {
-                conditionComment = "体調は万全です。毛ヅヤも良く、動きに余裕があります。";
+                conditionComment = Texts.t("体調は万全です。毛ヅヤも良く、動きに余裕があります。",
+                        "Condition is excellent. The coat looks good and the movement is relaxed.");
             } else if (condition >= 65 && fatigue <= 45) {
-                conditionComment = "状態は悪くありません。もう少し整えばさらに良くなります。";
+                conditionComment = Texts.t("状態は悪くありません。もう少し整えばさらに良くなります。",
+                        "The horse is in decent shape. A little more work should sharpen it up.");
             } else if (fatigue >= 70) {
-                conditionComment = "かなり疲れが見えます。無理せず軽めにしておきたいですね。";
+                conditionComment = Texts.t("かなり疲れが見えます。無理せず軽めにしておきたいですね。",
+                        "There is clear fatigue. Keep things light for now.");
             } else if (fatigue >= 50) {
-                conditionComment = "少し疲れが残っています。馬なりで様子を見るのがよさそうです。";
+                conditionComment = Texts.t("少し疲れが残っています。馬なりで様子を見るのがよさそうです。",
+                        "Some fatigue remains. A hand ride would be a good choice.");
             } else {
-                conditionComment = "まだ本調子ではありませんが、調教を重ねれば上向いてきます。";
+                conditionComment = Texts.t("まだ本調子ではありませんが、調教を重ねれば上向いてきます。",
+                        "Not at peak condition yet, but more training should help.");
             }
 
             String readyComment;
             if (ready) {
-                readyComment = "レースに出れます。相手関係を見て出走を決めましょう。";
+                readyComment = Texts.t("レースに出れます。相手関係を見て出走を決めましょう。",
+                        "The horse can race now. Check the opponents and choose an entry.");
             } else {
-                readyComment = "まだレースに使うには早いですね。もう少し乗り込んでからにしましょう。";
+                readyComment = Texts.t("まだレースに使うには早いですね。もう少し乗り込んでからにしましょう。",
+                        "It is too early to race. Give the horse more work first.");
             }
             if (lastTrainingComment != null && lastTrainingComment.length() > 0) {
                 return lastTrainingComment + "\n" + conditionComment + "\n" + readyComment;
@@ -786,18 +812,21 @@ public class MainActivity extends Activity {
 
         String trainingText(SimpleDateFormat format) {
             if (isRetired()) {
-                return "引退済みです。次の競走馬を育成できます。";
+                return Texts.t("引退済みです。次の競走馬を育成できます。",
+                        "Retired. You can raise the next racehorse.");
             }
             long endAt = prefs.getLong("trainingEndAt", 0L);
             if (endAt > System.currentTimeMillis()) {
                 long remaining = Math.max(0, endAt - System.currentTimeMillis());
-                return "調教中: " + trainingName(prefs.getInt("trainingType", 0))
-                        + "\n完了予定: " + format.format(new Date(endAt))
-                        + "\n残り: " + remainingText(remaining);
+                return Texts.t("調教中: ", "Training: ") + trainingName(prefs.getInt("trainingType", 0))
+                        + Texts.t("\n完了予定: ", "\nFinishes: ") + format.format(new Date(endAt))
+                        + Texts.t("\n残り: ", "\nRemaining: ") + remainingText(remaining);
             }
             return prefs.getBoolean("ready", false)
-                    ? "レースに出れます。ジョッキーと指示を選んでください。"
-                    : "調教指示を選んで開始してください。";
+                    ? Texts.t("レースに出れます。ジョッキーと指示を選んでください。",
+                    "The horse can race. Choose a jockey and tactic.")
+                    : Texts.t("調教指示を選んで開始してください。",
+                    "Choose a training order to begin.");
         }
 
         void applyPasture() {
@@ -810,7 +839,8 @@ public class MainActivity extends Activity {
                     .putInt("condition", clamp(horse.condition + 18, 1, 100))
                     .putInt("fatigue", Math.max(0, horse.fatigue - 55))
                     .putInt("hardTrainingStreak", 0)
-                    .putString("lastTrainingComment", "放牧で疲れはかなり抜けました。馬体もふっくらしてきました。")
+                    .putString("lastTrainingComment", Texts.t("放牧で疲れはかなり抜けました。馬体もふっくらしてきました。",
+                            "Pasture cleared most of the fatigue. The horse has filled out again."))
                     .putBoolean("peakForm", false)
                     .putBoolean("retired", retired)
                     .putString("retireReason", retired ? "age" : "")
@@ -844,39 +874,50 @@ public class MainActivity extends Activity {
         }
 
         private String trainingName(int type) {
-            return new String[]{"強め", "弱め", "馬なり"}[type];
+            return (Texts.english() ? new String[]{"Hard", "Easy", "Hand ride"} : new String[]{"強め", "弱め", "馬なり"})[type];
         }
 
         private String trainingConditionComment(int condition, int fatigue, int type, boolean peakForm) {
             if (peakForm) {
-                return "絶好調です。いい感じに仕上がりました。今ならレースでいい結果を期待できます。";
+                return Texts.t("絶好調です。いい感じに仕上がりました。今ならレースでいい結果を期待できます。",
+                        "Excellent condition. The horse is nicely tuned and should run well now.");
             }
             if (fatigue >= 78) {
-                return "疲れが見えます。ここで無理をすると脚元に響きそうです。";
+                return Texts.t("疲れが見えます。ここで無理をすると脚元に響きそうです。",
+                        "Fatigue is showing. Pushing harder could hurt the legs.");
             }
             if (condition <= 45 && fatigue <= 35) {
-                return "少し太り気味です。動きに重さがありますね。";
+                return Texts.t("少し太り気味です。動きに重さがありますね。",
+                        "The horse looks a little heavy. The movement lacks sharpness.");
             }
             if (condition >= 88 && fatigue <= 18) {
-                return "絶好調です。反応も鋭く、文句ない仕上がりです。";
+                return Texts.t("絶好調です。反応も鋭く、文句ない仕上がりです。",
+                        "Excellent condition. The response is sharp and the horse is fully ready.");
             }
             if (condition >= 75 && fatigue <= 35) {
-                return "いい感じに仕上がりました。レースでも力を出せそうです。";
+                return Texts.t("いい感じに仕上がりました。レースでも力を出せそうです。",
+                        "Nicely prepared. The horse should show its ability in a race.");
             }
             if (type == 0 && fatigue >= 55) {
-                return "強めにやったぶん疲れが残っています。次は軽めで様子を見たいですね。";
+                return Texts.t("強めにやったぶん疲れが残っています。次は軽めで様子を見たいですね。",
+                        "The hard work left some fatigue. Go lighter next time.");
             }
             if (type == 2 && fatigue <= 30) {
-                return "馬なりで気分良く走れていました。雰囲気は悪くありません。";
+                return Texts.t("馬なりで気分良く走れていました。雰囲気は悪くありません。",
+                        "The horse moved comfortably under a hand ride. The mood is good.");
             }
-            return "順調に乗り込めています。大きな問題はありません。";
+            return Texts.t("順調に乗り込めています。大きな問題はありません。",
+                    "Training is progressing steadily. No major issues.");
         }
 
         String calendarText() {
             Horse horse = snapshot();
-            return "現在: " + GameCalendar.weekText(horse.gameDay)
-                    + "\n育成期間: " + (horse.gameDay / 7 + 1) + "週目 / 引退目安 " + GameCalendar.weekText(GameCalendar.YEAR_DAYS * 4)
-                    + "\n調教完了で1週、レース後は1週、放牧では1か月進みます。";
+            return Texts.t("現在: ", "Current: ") + GameCalendar.weekText(horse.gameDay)
+                    + Texts.t("\n育成期間: " + (horse.gameDay / 7 + 1) + "週目 / 引退目安 ",
+                    "\nCareer: Week " + (horse.gameDay / 7 + 1) + " / Retirement around ")
+                    + GameCalendar.weekText(GameCalendar.YEAR_DAYS * 4)
+                    + Texts.t("\n調教完了で1週、レース後は1週、放牧では1か月進みます。",
+                    "\nTraining advances 1 week, racing advances 1 week, pasture advances 1 month.");
         }
 
         int nextRaceGameDay(RaceData race) {
@@ -952,10 +993,10 @@ public class MainActivity extends Activity {
             for (int i = 0; i < ALL.length; i++) {
                 Stallion stallion = ALL[i];
                 names[i] = stallion.name
-                        + " 実績" + stallion.recordRank
-                        + " " + stallion.growth
-                        + " スピード" + stallion.speedRank
-                        + " スタミナ" + stallion.staminaRank;
+                        + Texts.t(" 実績", " Record ") + stallion.recordRank
+                        + " " + growthText(stallion.growth)
+                        + Texts.t(" スピード", " Speed ") + stallion.speedRank
+                        + Texts.t(" スタミナ", " Stamina ") + stallion.staminaRank;
             }
             return names;
         }
@@ -1079,6 +1120,27 @@ public class MainActivity extends Activity {
             }
             return races;
         }
+
+        String courseText() {
+            if (!Texts.english()) {
+                return course;
+            }
+            if ("中山".equals(course)) return "Nakayama";
+            if ("京都".equals(course)) return "Kyoto";
+            if ("東京".equals(course)) return "Tokyo";
+            if ("中京".equals(course)) return "Chukyo";
+            if ("阪神".equals(course)) return "Hanshin";
+            if ("函館".equals(course)) return "Hakodate";
+            if ("福島".equals(course)) return "Fukushima";
+            if ("小倉".equals(course)) return "Kokura";
+            if ("新潟".equals(course)) return "Niigata";
+            if ("札幌".equals(course)) return "Sapporo";
+            return course;
+        }
+
+        String surfaceText() {
+            return Texts.t(surface, "ダート".equals(surface) ? "Dirt" : "Turf");
+        }
     }
 
     private static class RaceEngine {
@@ -1137,26 +1199,28 @@ public class MainActivity extends Activity {
         }
 
         private static double jockeyBonus(String jockey, String tactic) {
-            if (jockey.contains("逃げ") && "逃げ".equals(tactic)) {
+            String jockeyLower = jockey.toLowerCase(Locale.US);
+            if ((jockey.contains("逃げ") || jockeyLower.contains("front-run")) && ("逃げ".equals(tactic) || "Front-run".equals(tactic))) {
                 return 12;
             }
-            if (jockey.contains("差し") && "追い込み".equals(tactic)) {
+            if ((jockey.contains("差し") || jockeyLower.contains("closing")) && ("追い込み".equals(tactic) || "Closer".equals(tactic))) {
                 return 12;
             }
-            if (jockey.contains("ベテラン") || jockey.contains("外国人")) {
+            if (jockey.contains("ベテラン") || jockey.contains("外国人")
+                    || jockeyLower.contains("veteran") || jockeyLower.contains("international")) {
                 return 8;
             }
             return 4;
         }
 
         private static double tacticBonus(String tactic, int distance, Horse horse) {
-            if ("お任せ".equals(tactic)) {
+            if ("お任せ".equals(tactic) || "Auto".equals(tactic)) {
                 return 6 + horse.guts * 0.12;
             }
-            if ("逃げ".equals(tactic)) {
+            if ("逃げ".equals(tactic) || "Front-run".equals(tactic)) {
                 return horse.gate * 0.35 + (distance <= 1800 ? 8 : -4);
             }
-            if ("追い込み".equals(tactic)) {
+            if ("追い込み".equals(tactic) || "Closer".equals(tactic)) {
                 return horse.stamina * 0.22 + horse.guts * 0.24 + (distance >= 2200 ? 7 : -3);
             }
             return 5 + horse.condition * 0.08;
@@ -1249,22 +1313,40 @@ public class MainActivity extends Activity {
 
         String summary(boolean retired) {
             StringBuilder builder = new StringBuilder();
-            builder.append(raceDate).append(" ").append(race.name).append(" 結果\n");
-            builder.append("ジョッキー: ").append(jockey).append(" / 指示: ").append(tactic).append("\n");
-            builder.append("着順: ").append(rank).append("着\n\n");
+            builder.append(raceDate).append(" ").append(race.name).append(Texts.t(" 結果\n", " Result\n"));
+            builder.append(Texts.t("ジョッキー: ", "Jockey: ")).append(jockey)
+                    .append(Texts.t(" / 指示: ", " / Tactic: ")).append(tactic).append("\n");
+            builder.append(Texts.t("着順: " + rank + "着\n\n", "Finish: " + ordinal(rank) + "\n\n"));
             List<Runner> sorted = new ArrayList<>(runners);
             sorted.sort((a, b) -> Integer.compare(a.rank, b.rank));
             for (Runner runner : sorted) {
-                builder.append(runner.rank).append("着  ").append(runner.name);
+                builder.append(Texts.t(runner.rank + "着  ", ordinal(runner.rank) + "  ")).append(runner.name);
                 if (runner.player) {
-                    builder.append("  *育成馬");
+                    builder.append(Texts.t("  *育成馬", "  *Your horse"));
                 }
                 builder.append("\n");
             }
             if (retired) {
-                builder.append("\n7歳前後まで走り切ったため、この馬は引退します。次の競走馬を育成できます。");
+                builder.append(Texts.t("\n7歳前後まで走り切ったため、この馬は引退します。次の競走馬を育成できます。",
+                        "\nThe horse has run through its career and will retire. You can raise the next racehorse."));
             }
             return builder.toString();
+        }
+
+        private String ordinal(int value) {
+            if (value % 100 >= 11 && value % 100 <= 13) {
+                return value + "th";
+            }
+            switch (value % 10) {
+                case 1:
+                    return value + "st";
+                case 2:
+                    return value + "nd";
+                case 3:
+                    return value + "rd";
+                default:
+                    return value + "th";
+            }
         }
     }
 
@@ -1310,12 +1392,13 @@ public class MainActivity extends Activity {
             int year = BASE_YEAR + gameDay / YEAR_DAYS;
             int month = monthOf(gameDay);
             int week = weekOfMonth(gameDay);
-            return year + "年" + month + "月第" + week + "週";
+            return Texts.t(year + "年" + month + "月第" + week + "週",
+                    year + " " + monthName(month) + " Week " + week);
         }
 
         static String monthWeekText(int month, int day) {
             int week = weekOfMonthForDay(day);
-            return month + "月第" + week + "週";
+            return Texts.t(month + "月第" + week + "週", monthName(month) + " Week " + week);
         }
 
         static int monthOf(int gameDay) {
@@ -1344,6 +1427,12 @@ public class MainActivity extends Activity {
 
         static int weekKey(int gameDay) {
             return (BASE_YEAR + gameDay / YEAR_DAYS) * 1000 + monthOf(gameDay) * 10 + weekOfMonth(gameDay);
+        }
+
+        private static String monthName(int month) {
+            String[] months = {"January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"};
+            return months[Math.max(0, Math.min(month - 1, months.length - 1))];
         }
     }
 
@@ -1405,7 +1494,7 @@ public class MainActivity extends Activity {
         private void drawIdle(Canvas canvas, int width, int height) {
             paint.setColor(Color.rgb(33, 45, 38));
             paint.setTextSize(dp(16));
-            canvas.drawText("準備OKになったら出馬できます", dp(26), height / 2f, paint);
+            canvas.drawText(Texts.t("準備OKになったら出馬できます", "Race when the horse is ready"), dp(26), height / 2f, paint);
         }
 
         private void drawRunners(Canvas canvas, int width, int height, float elapsed) {
@@ -1452,11 +1541,21 @@ public class MainActivity extends Activity {
         long minutes = (seconds % 3600L) / 60L;
         long remainSeconds = seconds % 60L;
         if (hours > 0) {
-            return hours + "時間" + minutes + "分";
+            return Texts.t(hours + "時間" + minutes + "分", hours + "h " + minutes + "m");
         }
         if (minutes > 0) {
-            return minutes + "分" + remainSeconds + "秒";
+            return Texts.t(minutes + "分" + remainSeconds + "秒", minutes + "m " + remainSeconds + "s");
         }
-        return remainSeconds + "秒";
+        return Texts.t(remainSeconds + "秒", remainSeconds + "s");
+    }
+
+    private static String growthText(String growth) {
+        if ("早熟".equals(growth)) {
+            return Texts.t("早熟", "Early");
+        }
+        if ("晩成".equals(growth)) {
+            return Texts.t("晩成", "Late");
+        }
+        return Texts.t("普通", "Normal");
     }
 }

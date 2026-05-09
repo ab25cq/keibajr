@@ -29,7 +29,7 @@ public class RaceActivity extends Activity {
         float[] paces = getIntent().getFloatArrayExtra("runnerPaces");
         boolean[] players = getIntent().getBooleanArrayExtra("runnerPlayers");
 
-        setTitle(raceName == null ? "レース" : raceName);
+        setTitle(raceName == null ? Texts.t("レース", "Race") : raceName);
         setContentView(new RaceView(this, raceName, names, ranks, paces, players));
         handler.postDelayed(this::showResult, RACE_MS + 600);
     }
@@ -46,7 +46,7 @@ public class RaceActivity extends Activity {
         }
         resultStarted = true;
         Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra("summary", summary == null ? "結果を取得できませんでした。" : summary);
+        intent.putExtra("summary", summary == null ? Texts.t("結果を取得できませんでした。", "Could not load the result.") : summary);
         startActivity(intent);
         finish();
     }

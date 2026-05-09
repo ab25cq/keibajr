@@ -3,18 +3,20 @@
 
     <application
         android:allowBackup="true"
-        android:label="競馬育成Jr"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ResultActivity"
+            android:name="com.ab25cq.keibajr.ResultActivity"
             android:exported="false" />
 
         <activity
-            android:name=".RaceActivity"
+            android:name="com.ab25cq.keibajr.RaceActivity"
             android:exported="false" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.ab25cq.keibajr.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

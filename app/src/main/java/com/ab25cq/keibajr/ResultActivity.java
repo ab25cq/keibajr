@@ -14,7 +14,7 @@ public class ResultActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("レース結果");
+        setTitle(Texts.t("レース結果", "Race Result"));
 
         int pad = dp(16);
         ScrollView scrollView = new ScrollView(this);
@@ -26,7 +26,7 @@ public class ResultActivity extends Activity {
         scrollView.addView(root);
 
         TextView title = new TextView(this);
-        title.setText("レース結果");
+        title.setText(Texts.t("レース結果", "Race Result"));
         title.setTextSize(24);
         title.setTextColor(Color.rgb(33, 45, 38));
         title.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
@@ -46,7 +46,7 @@ public class ResultActivity extends Activity {
         root.addView(summaryView, summaryParams);
 
         Button backButton = new Button(this);
-        backButton.setText("厩舎へ戻る");
+        backButton.setText(Texts.t("厩舎へ戻る", "Back to Stable"));
         backButton.setAllCaps(false);
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivity.class);
